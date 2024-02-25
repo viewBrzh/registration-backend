@@ -14,8 +14,8 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/users', (req, res) => {
-    pool.query('SELECT * FROM users', (error, results) => {
+app.get('/course/detail', (req, res) => {
+    pool.query('SELECT * FROM trn_course_detail', (error, results) => {
     if (error) {
         res.status(500).send('Internal Server Error');
         return;
@@ -26,5 +26,5 @@ app.get('/users', (req, res) => {
 
 const PORT = process.env.PORT || 11230;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on: http://localhost:${PORT}`);
 });
