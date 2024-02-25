@@ -3,11 +3,11 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 
 const pool = mysql.createPool({
-    connectionLimit: 10,
-    host: 'your-database-host',
-    user: 'your-database-user',
-    password: 'your-database-password',
-    database: 'your-database-name'
+    connectionLimit: 100,
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: ''
   });
 
 const app = express();
