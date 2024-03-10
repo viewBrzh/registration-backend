@@ -4,12 +4,12 @@ const mysql = require('mysql');
 const cors = require('cors');
 
 const pool = mysql.createPool({
-    connectionLimit: 100,
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'registration'
-  });
+  connectionLimit: 100,
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'registration'
+});
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -18,11 +18,11 @@ app.use(cors());
 
 app.get('/course', (req, res) => {
   pool.query('SELECT * FROM trn_course_detail', (error, results) => {
-  if (error) {
+    if (error) {
       res.status(500).send('Internal Server Error');
       return;
-  }
-  res.json(results);
+    }
+    res.json(results);
   });
 });
 
@@ -42,18 +42,23 @@ app.get('/course/detail/:id', (req, res) => {
   });
 });
 
-// POST route for creating a new course
 app.post('/course', (req, res) => {
-  const { courseName, courseDescription } = req.body;
-  pool.query('INSERT INTO trn_course_detail (train_course_name, train_detail) VALUES (?, ?)', [courseName, courseDescription], (error, results) => {
-    if (error) {
-      console.error('Error inserting course:', error);
-      res.status(500).send('Internal Server Error');
-      return;
+  const { course_detail_name, course_id, train_detail, train_place, start_date, finish_date } = req.body;
+  pool.query(
+    'INSERT INTO trn_course_detail (course_detail_name, course_id, train_detail, train_place, start_date, finish_date) VALUES (?, ?, ?, ?, ?, ?)',
+    [course_detail_name, course_id, train_detail, train_place, start_date, finish_date],
+    (error, results) => {
+      if (error) {
+        console.error('Error inserting course:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+        return;
+      }
+      res.status(201).json({ message: 'Course created successfully' });
     }
-    res.status(201).send('Course created successfully');
-  });
+  );
 });
+
+
 
 app.put('/course/update/:id', (req, res) => {
   const courseId = req.params.id;
@@ -76,8 +81,6 @@ app.put('/course/update/:id', (req, res) => {
   );
 });
 
-
-
 // DELETE route for deleting a course by ID
 app.delete('/course/:id', (req, res) => {
   const courseId = req.params.id;
@@ -90,8 +93,6 @@ app.delete('/course/:id', (req, res) => {
     res.status(200).json({ message: 'Course deleted successfully' });
   });
 });
-
-
 
 const PORT = process.env.PORT || 11230;
 app.listen(PORT, () => {
