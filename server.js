@@ -84,12 +84,13 @@ app.delete('/course/:id', (req, res) => {
   pool.query('DELETE FROM trn_course_detail WHERE train_course_id = ?', [courseId], (error, results) => {
     if (error) {
       console.error('Error deleting course:', error);
-      res.status(500).send('Internal Server Error');
+      res.status(500).json({ message: 'Internal Server Error' });
       return;
     }
-    res.status(200).send('Course deleted successfully');
+    res.status(200).json({ message: 'Course deleted successfully' });
   });
 });
+
 
 
 const PORT = process.env.PORT || 11230;
