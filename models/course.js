@@ -10,16 +10,13 @@ module.exports = class Course {
     this.finish_date = finish_date;
   }
 
-  static findAll() {
-    return new Promise((resolve, reject) => {
-      db.query('SELECT * FROM trn_course_detail', (error, results) => {
-        if (error) {
-          reject(error);
-          return;
-        }
-        resolve(results);
-      });
-    });
+  static async findAll() {
+    try {
+      const [results, fields] = await db.execute('SELECT * FROM trn_course_detail');
+      return results;
+    } catch (error) {
+      throw error;
+    }
   }
 
   static findById(courseId) {
@@ -37,6 +34,11 @@ module.exports = class Course {
       });
     });
   }
+
+  static findOne(courseId) {
+    return db.execute('SELECT * FROM trn_course_detail WHERE train_course_id = ?', [courseId]);
+  }
+
 
   static create(course_detail_name, course_id, train_detail, train_place, start_date, finish_date) {
     return new Promise((resolve, reject) => {
