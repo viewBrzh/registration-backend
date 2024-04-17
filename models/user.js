@@ -32,10 +32,19 @@ module.exports = class User {
     });
   }
 
+  // findOne method
   static findOne(username) {
-    return db.execute('SELECT * FROM users WHERE username = ? LIMIT 1', [username]);
+    return new Promise((resolve, reject) => {
+      db.query('SELECT * FROM users WHERE username = ?', [username], (error, results) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+
+        resolve(results);
+      });
+    });
   }
-  
 
   static create(username, email, password) {
     return new Promise((resolve, reject) => {
