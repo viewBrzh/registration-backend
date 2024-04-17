@@ -56,11 +56,11 @@ module.exports = class Course {
     });
   }
 
-  static update(courseId, course_detail_name, train_detail, train_place, start_date, finish_date) {
+  static update(courseId, course_id, course_detail_name, train_detail, train_place, start_date, finish_date) {
     return new Promise((resolve, reject) => {
       db.query(
-        'UPDATE trn_course_detail SET course_detail_name = ?, train_detail = ?, train_place = ?, start_date = ?, finish_date = ? WHERE train_course_id = ?',
-        [course_detail_name, train_detail, train_place, start_date, finish_date, courseId],
+        'UPDATE trn_course_detail SET course_id = ?, course_detail_name = ?, train_detail = ?, train_place = ?, start_date = ?, finish_date = ? WHERE train_course_id = ?',
+        [course_id, course_detail_name, train_detail, train_place, start_date, finish_date, courseId],
         (error, results) => {
           if (error) {
             reject(error);

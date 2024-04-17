@@ -66,9 +66,9 @@ exports.getEditCourse = (req, res, next) => {
 
 exports.editCourse = (req, res, next) => {
     const courseId = req.params.courseId;
-    const { course_detail_name, train_detail, train_place, start_date, finish_date } = req.body;
+    const { course_id, course_detail_name, train_detail, train_place, start_date, finish_date } = req.body;
     
-    Course.update(courseId, course_detail_name, train_detail, train_place, start_date, finish_date).then(() => {
+    Course.update(courseId, course_id, course_detail_name, train_detail, train_place, start_date, finish_date).then(() => {
         res.status(200).json({
             "message": "success",
             "result": true
