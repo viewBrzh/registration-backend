@@ -76,6 +76,27 @@ module.exports = class Course {
     });
   }
 
+  static setPublish(courseId, isPublish) {
+    return new Promise((resolve, reject) => {
+        db.query(
+            'UPDATE trn_course_detail SET isPublish = ? WHERE train_course_id = ?',
+            [isPublish ? 1 : 0, courseId],
+            (error, results) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                if (results.affectedRows === 0) {
+                    reject('Course not found');
+                    return;
+                }
+                resolve(results);
+            }
+        );
+    });
+}
+
+
   static delete(courseId) {
     return new Promise((resolve, reject) => {
       db.query('DELETE FROM trn_course_detail WHERE train_course_id = ?', [courseId], (error, results) => {

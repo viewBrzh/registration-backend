@@ -12,7 +12,22 @@ exports.getAllCourses = async (req, res) => {
     }
 };
 
-  
+exports.setPublishCourse = (req, res, next) => {
+    const courseId = req.params.courseId;
+    const isPublish = req.body.isPublish;
+
+    Course.setPublish(courseId, isPublish).then(() => {
+        res.status(200).json({
+            "message": "success",
+            "result": true
+        });
+    }).catch((error) => {
+        res.status(500).json({
+            "message": error,
+            "result": false
+        });
+    });
+}
 
 exports.addCourse = (req, res, next) => {
     const { course_detail_name, course_id, train_detail, train_place, start_date, finish_date } = req.body;

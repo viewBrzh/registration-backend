@@ -16,4 +16,6 @@ router.post('/create', CourseController.addCourse);
 
 router.delete('/delete/:courseId', CourseController.deleteCourse);
 
+router.put('/set-publish/:courseId', CourseController.setPublishCourse);
+
 module.exports = router;
