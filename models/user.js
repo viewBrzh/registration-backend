@@ -5,6 +5,7 @@ module.exports = class User {
     this.username = username;
     this.email = email;
     this.password = password;
+    this.role = role;
   }
 
   static async findAll() {
@@ -17,22 +18,9 @@ module.exports = class User {
   }
 
   static findById(userId) {
-    return new Promise((resolve, reject) => {
-      db.query('SELECT * FROM users WHERE id = ?', [userId], (error, results) => {
-        if (error) {
-          reject(error);
-          return;
-        }
-        if (results.length === 0) {
-          reject('User not found');
-          return;
-        }
-        resolve(results[0]);
-      });
-    });
+    return db.execute('SELECT * FROM users WHERE user_id = ?', [userId]);
   }
 
-  // findOne method
   static findOne(username) {
     return new Promise((resolve, reject) => {
       db.query('SELECT * FROM users WHERE username = ?', [username], (error, results) => {
@@ -40,33 +28,16 @@ module.exports = class User {
           reject(error);
           return;
         }
-
         resolve(results);
       });
-    });
-  }
-
-  static create(username, email, password) {
-    return new Promise((resolve, reject) => {
-      db.query(
-        'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-        [username, email, password],
-        (error, results) => {
-          if (error) {
-            reject(error);
-            return;
-          }
-          resolve(results);
-        }
-      );
     });
   }
 
   static update(userId, username, email, password) {
     return new Promise((resolve, reject) => {
       db.query(
-        'UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?',
-        [username, email, password, userId],
+        'UPDATE users SET username = ?, email = ?, password = ?, role = ? WHERE user_id = ?',
+        [username, email, password, role, userId],
         (error, results) => {
           if (error) {
             reject(error);
@@ -84,7 +55,7 @@ module.exports = class User {
 
   static delete(userId) {
     return new Promise((resolve, reject) => {
-      db.query('DELETE FROM users WHERE id = ?', [userId], (error, results) => {
+      db.query('DELETE FROM users WHERE user_id = ?', [userId], (error, results) => {
         if (error) {
           reject(error);
           return;
@@ -92,5 +63,17 @@ module.exports = class User {
         resolve(results);
       });
     });
+  }
+
+  static async login(username, password) {
+    try {
+      const [results, fields] = await db.execute('SELECT * FROM users WHERE username = ? AND password = ?', [username, password]);
+      if (results.length === 0) {
+        throw new Error('Invalid credentials');
+      }
+      return results[0];
+    } catch (error) {
+      throw error;
+    }
   }
 };
