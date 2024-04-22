@@ -102,7 +102,7 @@ exports.updateEnrollment = async (req, res) => {
 
 exports.deleteEnrollment = async (req, res) => {
     try {
-        const enrollId = req.params.enrollId;
+        const enrollId = req.params.enroll_id;
         await Enrollment.delete(enrollId);
         res.status(200).json({
             message: 'Enrollment deleted successfully',

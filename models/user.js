@@ -1,11 +1,12 @@
 const db = require('../util/database');
 
 module.exports = class User {
-  constructor(username, email, password) {
+  constructor(username, email, password, role, department) {
     this.username = username;
     this.email = email;
     this.password = password;
     this.role = role;
+    this.department = department;
   }
 
   static async findAll() {
@@ -18,7 +19,7 @@ module.exports = class User {
   }
 
   static findById(userId) {
-    return db.execute('SELECT * FROM users WHERE user_id = ?', [userId]);
+    return db.execute('SELECT user_id, username, email, role, department FROM users WHERE user_id = ?', [userId]);
   }
 
   static findOne(username) {
