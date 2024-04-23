@@ -40,11 +40,11 @@ module.exports = class Course {
   }
 
 
-  static create(course_detail_name, course_id, train_detail, train_place, start_date, finish_date) {
+  static create(course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image) {
     return new Promise((resolve, reject) => {
       db.query(
-        'INSERT INTO trn_course_detail (course_detail_name, course_id, train_detail, train_place, start_date, finish_date) VALUES (?, ?, ?, ?, ?, ?)',
-        [course_detail_name, course_id, train_detail, train_place, start_date, finish_date],
+        'INSERT INTO trn_course_detail (course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image],
         (error, results) => {
           if (error) {
             reject(error);
@@ -56,11 +56,11 @@ module.exports = class Course {
     });
   }
 
-  static update(courseId, course_id, course_detail_name, train_detail, train_place, start_date, finish_date) {
+  static update(courseId, course_id, course_detail_name, train_detail, train_place, start_date, finish_date, image) {
     return new Promise((resolve, reject) => {
       db.query(
-        'UPDATE trn_course_detail SET course_id = ?, course_detail_name = ?, train_detail = ?, train_place = ?, start_date = ?, finish_date = ? WHERE train_course_id = ?',
-        [course_id, course_detail_name, train_detail, train_place, start_date, finish_date, courseId],
+        'UPDATE trn_course_detail SET course_id = ?, course_detail_name = ?, train_detail = ?, train_place = ?, start_date = ?, finish_date = ?, image = ? WHERE train_course_id = ?',
+        [course_id, course_detail_name, train_detail, train_place, start_date, finish_date, image, courseId],
         (error, results) => {
           if (error) {
             reject(error);
