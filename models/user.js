@@ -68,7 +68,7 @@ module.exports = class User {
 
   static async login(username, password) {
     try {
-      const [results, fields] = await db.execute('SELECT * FROM users WHERE username = ? AND password = ?', [username, password]);
+      const [results, fields] = await db.execute('SELECT user_id, username, email, phone, department, role, image FROM users WHERE username = ? AND password = ?', [username, password]);
       if (results.length === 0) {
         throw new Error('Invalid credentials');
       }
