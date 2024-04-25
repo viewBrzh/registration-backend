@@ -19,7 +19,7 @@ module.exports = class User {
   }
 
   static findById(userId) {
-    return db.execute('SELECT user_id, username, email, role, department FROM users WHERE user_id = ?', [userId]);
+    return db.execute('SELECT user_id, username, email, role, department, phone, image FROM users WHERE user_id = ?', [userId]);
   }
 
   static findOne(username) {
@@ -34,11 +34,11 @@ module.exports = class User {
     });
   }
 
-  static update(userId, username, email, password) {
+  static update(userId, username, email, phone, image) {
     return new Promise((resolve, reject) => {
       db.query(
-        'UPDATE users SET username = ?, email = ?, password = ?, role = ? WHERE user_id = ?',
-        [username, email, password, role, userId],
+        'UPDATE users SET username = ?, email = ?, phone = ?, image = ? WHERE user_id = ?',
+        [username, email, phone, image, userId],
         (error, results) => {
           if (error) {
             reject(error);

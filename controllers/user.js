@@ -26,8 +26,24 @@ exports.getUserById = async (req, res) => {
   const userId = req.params.id;
   try {
     const user = await User.findById(userId);
-    res.status(200).json( user[0] );
+    res.status(200).json(user[0]);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
+};
+
+exports.updateUser = async (req, res) => {
+  const userId = req.params.id;
+  const { username, email, phone, image } = req.body;
+  User.update(userId, username, email, phone, image).then(() => {
+    res.status(200).json({
+      "message": "success",
+      "result": true
+    });
+  }).catch((error) => {
+    res.status(200).json({
+      "message": error,
+      "result": false
+    });
+  });
 };

@@ -42,6 +42,22 @@ app.post('/upload', upload.single('file'), (req, res) => {
     res.json(image)
 });
 
+const storagePro = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/profiles')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname+"_"+Date.now()+path.extname(file.originalname))
+    }
+});
+const uploadPro = multer({ storage: storagePro });
+
+// Upload API endpoint
+app.post('/upload/profile', uploadPro.single('file'), (req, res) => {
+    const image = req.file.filename;
+    res.json(image)
+});
+
 app.listen(11230, () => {
     console.log('Server is running on port 11230');
 });
