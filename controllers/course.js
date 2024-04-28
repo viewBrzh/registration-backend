@@ -32,18 +32,20 @@ exports.setPublishCourse = (req, res, next) => {
 exports.addCourse = (req, res, next) => {
     const { course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image } = req.body;
     
-    Course.create(course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image).then(() => {
+    Course.create(course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image)
+    .then((insertId) => {
         res.status(200).json({
-            "message": "success",
-            "result": true
+            message: "Success",
+            insertId: insertId
         });
-    }).catch((error) => {
-        res.status(200).json({
-            "message": error,
-            "result": false
+    })
+    .catch((error) => {
+        res.status(500).json({
+            message: error
         });
     });
-}
+};
+
 
 exports.getEditCourse = (req, res, next) => {
     const courseId = req.params.courseId;
@@ -102,3 +104,16 @@ exports.getEnrollCountForCourse = async (req, res) => {
         });
     }
 };
+
+exports.updateSkills = async (req, res) => {
+    const courseId = req.params.courseId;
+    const skills = req.body.skills;
+    const skillsString = skills.join(', ');
+    try {
+        await Course.updateSkills(courseId, skillsString);
+        res.status(200).json({ message: 'Skills updated successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to update skills', error: error.message });
+    }
+}
+

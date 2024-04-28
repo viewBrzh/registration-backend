@@ -20,4 +20,6 @@ router.put('/set-publish/:courseId', CourseController.setPublishCourse);
 
 router.get('/:courseId/enrollCount', CourseController.getEnrollCountForCourse);
 
+router.put('/:courseId/update-skills', CourseController.updateSkills);
+
 module.exports = router;

@@ -39,22 +39,14 @@ module.exports = class Course {
     return db.execute('SELECT * FROM trn_course_detail WHERE train_course_id = ?', [courseId]);
   }
 
-
   static create(course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image) {
-    return new Promise((resolve, reject) => {
-      db.query(
-        'INSERT INTO trn_course_detail (course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image],
-        (error, results) => {
-          if (error) {
-            reject(error);
-            return;
-          }
-          resolve(results);
-        }
-      );
-    });
+    return db.execute(
+      'INSERT INTO trn_course_detail (course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image]
+    )
   }
+
+
 
   static update(courseId, course_id, course_detail_name, train_detail, train_place, start_date, finish_date, image) {
     return new Promise((resolve, reject) => {
@@ -117,5 +109,15 @@ module.exports = class Course {
       throw error;
     }
   }
+
+  static async updateSkills(courseId, skills) {
+    try {
+      const [results, fields] = await db.execute('UPDATE trn_course_detail SET skills = ? WHERE train_course_id = ?', [skills, courseId]);
+      return results;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 };
 
