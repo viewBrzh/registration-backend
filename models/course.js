@@ -78,23 +78,23 @@ module.exports = class Course {
 
   static setPublish(courseId, isPublish) {
     return new Promise((resolve, reject) => {
-        db.query(
-            'UPDATE trn_course_detail SET isPublish = ? WHERE train_course_id = ?',
-            [isPublish ? 1 : 0, courseId],
-            (error, results) => {
-                if (error) {
-                    reject(error);
-                    return;
-                }
-                if (results.affectedRows === 0) {
-                    reject('Course not found');
-                    return;
-                }
-                resolve(results);
-            }
-        );
+      db.query(
+        'UPDATE trn_course_detail SET isPublish = ? WHERE train_course_id = ?',
+        [isPublish ? 1 : 0, courseId],
+        (error, results) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          if (results.affectedRows === 0) {
+            reject('Course not found');
+            return;
+          }
+          resolve(results);
+        }
+      );
     });
-}
+  }
 
 
   static delete(courseId) {
@@ -108,4 +108,14 @@ module.exports = class Course {
       });
     });
   }
+
+  static async findEnrollCountByCourseId(courseId) {
+    try {
+      const [results, fields] = await db.execute('SELECT COUNT(*) AS enroll_count FROM trn_enroll WHERE train_course_id = ?', [courseId]);
+      return results[0].enroll_count;
+    } catch (error) {
+      throw error;
+    }
+  }
 };
+

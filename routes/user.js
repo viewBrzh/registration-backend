@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/user');
 
+router.get('/departments', userController.getAllDepartments)
+
 // Login user
 router.post('/login', userController.loginUser);
 
@@ -12,5 +14,7 @@ router.get('/all', userController.getAllUsers);
 router.get('/:id', userController.getUserById);
 
 router.put('/update/:id', userController.updateUser);
+
+router.get('/getDepartment/:id', userController.getUserDepartment);
 
 module.exports = router;

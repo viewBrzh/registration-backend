@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/course", courseRoutes);
-app.use('/users', userRoutes);
+app.use("/users", userRoutes);
 app.use('/enroll', enrollRoutes);
 
 // File upload configuration

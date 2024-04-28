@@ -41,9 +41,27 @@ exports.updateUser = async (req, res) => {
       "result": true
     });
   }).catch((error) => {
-    res.status(200).json({
+    res.status(400).json({
       "message": error,
       "result": false
     });
   });
 };
+
+exports.getUserDepartment = async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const department = await User.getDepartmentByUserId(userId);
+    res.status(200).json( department[0] );
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.getAllDepartments = async (req, res) => {
+  const departments = await User.getAllDepartments();
+  res.status(200).json(departments[0]); // Return the entire departments array
+ 
+};
+
+

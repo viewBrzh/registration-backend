@@ -70,4 +70,19 @@ module.exports = class Enrollment {
       throw error;
     }
   }
+
+  static async countByDepartment(departmentName) {
+    try {
+      const query = `
+        SELECT COUNT(*) AS enrollCount
+        FROM trn_enroll
+        JOIN users ON trn_enroll.user_id = users.user_id
+        WHERE users.department = ?`;
+      const [results, fields] = await db.execute(query, [departmentName]);
+      return results[0].enrollCount;
+    } catch (error) {
+      throw error;
+    }
+  }
+  
 };

@@ -18,4 +18,6 @@ router.delete('/delete/:courseId', CourseController.deleteCourse);
 
 router.put('/set-publish/:courseId', CourseController.setPublishCourse);
 
+router.get('/:courseId/enrollCount', CourseController.getEnrollCountForCourse);
+
 module.exports = router;

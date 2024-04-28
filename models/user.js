@@ -77,4 +77,22 @@ module.exports = class User {
       throw error;
     }
   }
+
+  static async getDepartmentByUserId(userId) {
+    try {
+      const [results, fields] = await db.execute('SELECT department FROM users WHERE user_id = ?', [userId]);
+      if (results.length === 0) {
+        throw new Error('Invalid credentials');
+      }
+      return results;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getAllDepartments() {
+    return db.execute('SELECT DISTINCT department FROM users');
+  }
+  
+
 };

@@ -1,4 +1,3 @@
-const Course = require('../models/course');
 const Enrollment = require('../models/enroll');
 
 exports.enrollCourse = async (req, res) => {
@@ -116,3 +115,21 @@ exports.deleteEnrollment = async (req, res) => {
         });
     }
 };
+
+exports.getCountByDepartment = async (req, res) => {
+    try {
+        const departmentName = req.params.departmentName;
+        const count = await Enrollment.countByDepartment(departmentName);
+        res.status(200).json({
+            count,
+            departmentName
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Failed to get enrollment count by department',
+            error: error.message
+        });
+    }
+};
+
+

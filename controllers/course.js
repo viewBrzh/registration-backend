@@ -89,3 +89,16 @@ exports.deleteCourse = (req, res, next) => {
         });
     });
 }
+
+exports.getEnrollCountForCourse = async (req, res) => {
+    const courseId = req.params.courseId;
+    try {
+        const enrollCount = await Course.findEnrollCountByCourseId(courseId);
+        res.status(200).json({ enrollCount });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Failed to fetch enrollment count',
+            error: error.message
+        });
+    }
+};
