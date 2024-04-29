@@ -9,7 +9,7 @@ exports.enrollCourse = async (req, res) => {
         const existingEnrollment = await Enrollment.findByCourseIdAndUserId(courseId, userId);
         if (existingEnrollment) {
             return res.status(400).json({
-                message: 'User is already enrolled in the course',
+                message: 'You already enrolled in the course',
                 result: false
             });
         }
@@ -29,6 +29,7 @@ exports.enrollCourse = async (req, res) => {
         });
     }
 };
+
 
 exports.getAllEnrollments = async (req, res) => {
     try {

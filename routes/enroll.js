@@ -8,7 +8,7 @@ router.get('/get-data/:enroll_id', Enrollment.getEnrollmentById);
 
 router.put('/update/:enroll_id', Enrollment.updateEnrollment);
 
-router.post('/create', Enrollment.enrollCourse);
+router.post('/create/:courseId', Enrollment.enrollCourse);
 
 router.delete('/delete/:enroll_id', Enrollment.deleteEnrollment);
 
