@@ -88,7 +88,7 @@ module.exports = class Enrollment {
   static async getCourseByUserId(userId) {
     try {
       const query = `
-        SELECT c.*
+        SELECT c.*, e.status
         FROM trn_enroll e
         JOIN trn_course_detail c ON e.train_course_id = c.train_course_id
         WHERE e.user_id = ?`;
@@ -98,6 +98,7 @@ module.exports = class Enrollment {
       throw error;
     }
   }
+
   
   
 };
