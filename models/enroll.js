@@ -84,5 +84,20 @@ module.exports = class Enrollment {
       throw error;
     }
   }
+
+  static async getCourseByUserId(userId) {
+    try {
+      const query = `
+        SELECT c.*
+        FROM trn_enroll e
+        JOIN trn_course_detail c ON e.train_course_id = c.train_course_id
+        WHERE e.user_id = ?`;
+      const [results, fields] = await db.execute(query, [userId] );
+      return results;
+    } catch(error) {
+      throw error;
+    }
+  }
+  
   
 };

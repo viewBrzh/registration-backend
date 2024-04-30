@@ -18,4 +18,6 @@ router.get('/get-byCourse/:course_id', Enrollment.findByCourseId);
 
 router.get('/getCoutByDepartment/:departmentName', Enrollment.getCountByDepartment);
 
+router.get('/getUserHistory/:user_id', Enrollment.getCourseByUserId);
+
 module.exports = router;

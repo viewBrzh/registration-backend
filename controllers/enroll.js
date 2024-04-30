@@ -133,4 +133,20 @@ exports.getCountByDepartment = async (req, res) => {
     }
 };
 
+exports.getCourseByUserId = async (req, res) => {
+    const userId = req.params.user_id;
+    try {
+        const courses = await Enrollment.getCourseByUserId(userId);
+        res.status(200).json({
+            courses
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: 'Fail to get courses by user_id',
+            error: error.message
+        })
+    }
+
+}
+
 
