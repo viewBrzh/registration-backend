@@ -149,4 +149,22 @@ exports.getCourseByUserId = async (req, res) => {
 
 }
 
+exports.UpdateStatusById = async (req, res) => {
+    const enrollId = req.params.enroll_id;
+    const { status } = req.body;
+
+    try {
+        // Update status in the database
+        const result = await Enrollment.updateStatus(enrollId, status);
+
+        if (result.affectedRows > 0) {
+            res.status(200).json({ message: 'Status updated successfully' });
+        } else {
+            res.status(404).json({ message: 'Enrollment not found' });
+        }
+    } catch (error) {
+        console.error('Error updating status:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
 

@@ -99,6 +99,13 @@ module.exports = class Enrollment {
     }
   }
 
-  
+  static async updateStatus(enrollId, newStatus) {
+    try {
+      const [results, fields] = await db.execute('UPDATE trn_enroll SET status = ? WHERE enroll_id = ?', [newStatus, enrollId]);
+      return results;
+    } catch (error) {
+      throw error;
+    }
+  }
   
 };
