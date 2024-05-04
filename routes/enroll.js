@@ -22,4 +22,6 @@ router.get('/getUserHistory/:user_id', Enrollment.getCourseByUserId);
 
 router.put('/updateEnrollStatus/:enroll_id', Enrollment.UpdateStatusById);
 
+router.get('/getCount', Enrollment.CountEnroll);
+
 module.exports = router;

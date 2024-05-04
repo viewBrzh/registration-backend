@@ -15,6 +15,10 @@ router.get('/:id', userController.getUserById);
 
 router.put('/update/:id', userController.updateUser);
 
+router.post('/userCount', userController.getUserCount);
+
 router.get('/getDepartment/:id', userController.getUserDepartment);
+
+
 
 module.exports = router;

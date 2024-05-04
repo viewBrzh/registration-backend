@@ -107,5 +107,18 @@ module.exports = class Enrollment {
       throw error;
     }
   }
+
+  static async getCount() {
+    try {
+      const query = `
+        SELECT COUNT(DISTINCT user_id) AS enrollCount
+        FROM trn_enroll
+        WHERE status = 1`;
+      const [results, fields] = await db.execute(query);
+      return results[0].enrollCount;
+    } catch (error) {
+      throw error;
+    }
+  }
   
 };

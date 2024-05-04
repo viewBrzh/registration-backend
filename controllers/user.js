@@ -64,4 +64,17 @@ exports.getAllDepartments = async (req, res) => {
  
 };
 
+exports.getUserCount = async (req, res) => {
+  try {
+    console.log('getUserCount route accessed');
+    const count = await User.getCount();
+    console.log('User count:', count);
+    res.json({ userCount: count });
+  } catch (error) {
+    console.error('Error getting user count:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
 

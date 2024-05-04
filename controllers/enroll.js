@@ -168,3 +168,12 @@ exports.UpdateStatusById = async (req, res) => {
     }
 };
 
+exports.CountEnroll = async (req, res) => {
+    try {
+        const count = await Enrollment.getCount();
+        res.status(200).json(count)
+    } catch (error) {
+        res.status(500).json({message: 'Internal server error'})
+    }
+}
+

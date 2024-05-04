@@ -93,6 +93,18 @@ module.exports = class User {
   static async getAllDepartments() {
     return db.execute('SELECT DISTINCT department FROM users');
   }
+
+  static async getCount() {
+    try {
+        const [results, fields] = await db.execute('SELECT COUNT(*) AS userCount FROM users WHERE role = "teacher" OR role = "executive"');
+        return results[0].userCount;
+    } catch (error) {
+        console.error('Error getting user count:', error);
+        throw error;
+    }
+};
+
+  
   
 
 };
