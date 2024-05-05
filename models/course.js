@@ -119,5 +119,13 @@ module.exports = class Course {
     }
   }
 
+  static async getCourseByYear(year) {
+    try {
+
+    } catch (error) {
+      throw error;
+    }
+  }
+
 };
 

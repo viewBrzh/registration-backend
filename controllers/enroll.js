@@ -177,3 +177,37 @@ exports.CountEnroll = async (req, res) => {
     }
 }
 
+exports.CountEnrollByYear = async (req, res) => {
+    let year = req.params.year;
+    year = year - 543;
+    try {
+        const count = await Enrollment.getCountByYear(year);
+        res.status(200).json(count)
+    } catch (error) {
+        res.status(500).json({message: 'Internal server error'})
+    }
+}
+
+exports.getEnrollByYear = async (req, res) => {
+    let year = req.params.year;
+    year = year - 543;
+    try {
+        const count = await Enrollment.getErollByYear(year);
+        res.status(200).json(count);
+    } catch (error) {
+        res.status(500).json({message: 'Internal server error'})
+    }
+}
+
+exports.getDepartmentByYear = async (req, res) => {
+    let year = req.params.year;
+    year = year - 543;
+    const department = req.params.department;
+    try {
+        const count = await Enrollment.getDepartmentByYear(department, year);
+        res.status(200).json(count);
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' })
+    }
+
+}

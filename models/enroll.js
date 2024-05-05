@@ -92,9 +92,9 @@ module.exports = class Enrollment {
         FROM trn_enroll e
         JOIN trn_course_detail c ON e.train_course_id = c.train_course_id
         WHERE e.user_id = ?`;
-      const [results, fields] = await db.execute(query, [userId] );
+      const [results, fields] = await db.execute(query, [userId]);
       return results;
-    } catch(error) {
+    } catch (error) {
       throw error;
     }
   }
@@ -120,5 +120,42 @@ module.exports = class Enrollment {
       throw error;
     }
   }
-  
+
+  static async getErollByYear(year) {
+    try {
+      const query = `
+        SELECT * FROM trn_enroll WHERE YEAR(enroll_date) = ?`;
+      const [results, fields] = await db.execute(query, [year]);
+      return results;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getCountByYear(year) {
+    try {
+      const query = `
+        SELECT COUNT(*) AS enrollCount FROM trn_enroll WHERE YEAR(enroll_date) = ? AND status = 1`;
+      const [results, fields] = await db.execute(query, [year]);
+      return results[0].enrollCount;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getDepartmentByYear(department, year) {
+    try {
+      const query = `
+            SELECT COUNT(*) AS enrollCount
+            FROM trn_enroll
+            JOIN users ON trn_enroll.user_id = users.user_id
+            WHERE users.department = ? AND YEAR(enroll_date) = ? AND status = 1`;
+      const [results, fields] = await db.execute(query, [department, year]);
+      return results[0].enrollCount;
+    } catch (error) {
+      console.error('Error in getDepartmentByYear:', error);
+      throw error;
+    }
+  }
+
 };

@@ -24,4 +24,10 @@ router.put('/updateEnrollStatus/:enroll_id', Enrollment.UpdateStatusById);
 
 router.get('/getCount', Enrollment.CountEnroll);
 
+router.get('/byYear/:year', Enrollment.getEnrollByYear);
+
+router.get('/countByYear/:year', Enrollment.CountEnrollByYear);
+
+router.get('/countDepartmentByYear/:department/:year', Enrollment.getDepartmentByYear);
+
 module.exports = router;
