@@ -3,12 +3,12 @@ const app = express();
 const cors = require('cors');
 const multer = require('multer');
 const db = require('./util/database');
-
 const path = require('path');
 
 const courseRoutes = require('./routes/course');
 const userRoutes = require('./routes/user');
 const enrollRoutes = require('./routes/enroll');
+const feedbackRoutes = require('./routes/feedback');
 
 app.use(cors());
 app.use(express.json());
@@ -24,6 +24,7 @@ app.use((req, res, next) => {
 app.use("/course", courseRoutes);
 app.use("/user", userRoutes);
 app.use('/enroll', enrollRoutes);
+app.use('/feedback', feedbackRoutes);
 
 // File upload configuration
 const storage = multer.diskStorage({
@@ -34,6 +35,7 @@ const storage = multer.diskStorage({
         cb(null, file.fieldname+"_"+Date.now()+path.extname(file.originalname))
     }
 });
+
 const upload = multer({ storage: storage });
 
 // Upload API endpoint
@@ -50,6 +52,7 @@ const storagePro = multer.diskStorage({
         cb(null, file.fieldname+"_"+Date.now()+path.extname(file.originalname))
     }
 });
+
 const uploadPro = multer({ storage: storagePro });
 
 // Upload API endpoint

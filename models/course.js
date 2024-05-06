@@ -121,7 +121,8 @@ module.exports = class Course {
 
   static async getCourseByYear(year) {
     try {
-
+      const [results, fields] = await db.execute('SELECT * FROM trn_course_detail WHERE YEAR(start_date) = ?', [year]);
+      return results;
     } catch (error) {
       throw error;
     }

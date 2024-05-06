@@ -158,4 +158,23 @@ module.exports = class Enrollment {
     }
   }
 
+  static async getNotiByUserId(userId) {
+    try {
+        const query = `
+            SELECT *
+            FROM trn_enroll
+            WHERE user_id = ? AND status = 1
+            AND NOT EXISTS (
+                SELECT 1
+                FROM feedback
+                WHERE feedback.enroll_id = trn_enroll.enroll_id
+            )`;
+        const [results, fields] = await db.execute(query, [userId]);
+        return results;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
 };

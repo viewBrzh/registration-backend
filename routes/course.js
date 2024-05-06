@@ -22,4 +22,6 @@ router.get('/:courseId/enrollCount', CourseController.getEnrollCountForCourse);
 
 router.put('/:courseId/update-skills', CourseController.updateSkills);
 
+router.get('/courseByYear/:year', CourseController.getCourseByYear);
+
 module.exports = router;

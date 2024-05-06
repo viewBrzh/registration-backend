@@ -30,4 +30,6 @@ router.get('/countByYear/:year', Enrollment.CountEnrollByYear);
 
 router.get('/countDepartmentByYear/:department/:year', Enrollment.getDepartmentByYear);
 
+router.get('/getNoti/:user_id', Enrollment.getNotiByuserId);
+
 module.exports = router;

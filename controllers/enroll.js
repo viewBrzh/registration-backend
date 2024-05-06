@@ -211,3 +211,13 @@ exports.getDepartmentByYear = async (req, res) => {
     }
 
 }
+
+exports.getNotiByuserId = async (req, res) => {
+    const userId = req.params.user_id;
+    try {
+        const result = await Enrollment.getNotiByUserId(userId);
+        res.status(200).json(result);
+    } catch (error) {
+        throw error;
+    }
+}

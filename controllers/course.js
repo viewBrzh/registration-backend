@@ -117,3 +117,16 @@ exports.updateSkills = async (req, res) => {
     }
 }
 
+exports.getCourseByYear = async (req, res) => {
+    let year = req.params.year; 
+    year = year - 543;
+    try {
+        const courses = await Course.getCourseByYear(year);
+        res.status(200).json(courses);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Failed to fetch courses by year',
+            error: error.message
+        });
+    }
+};
