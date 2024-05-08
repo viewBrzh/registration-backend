@@ -9,6 +9,7 @@ const courseRoutes = require('./routes/course');
 const userRoutes = require('./routes/user');
 const enrollRoutes = require('./routes/enroll');
 const feedbackRoutes = require('./routes/feedback');
+const criteria = require('./routes/criteria');
 
 app.use(cors());
 app.use(express.json());
@@ -25,6 +26,7 @@ app.use("/course", courseRoutes);
 app.use("/user", userRoutes);
 app.use('/enroll', enrollRoutes);
 app.use('/feedback', feedbackRoutes);
+app.use('/criteria', criteria);
 
 // File upload configuration
 const storage = multer.diskStorage({
