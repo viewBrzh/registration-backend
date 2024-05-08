@@ -105,6 +105,21 @@ exports.getEnrollCountForCourse = async (req, res) => {
     }
 };
 
+exports.getEnrollCountForCourseByYear = async (req, res) => {
+    const courseId = req.params.courseId;
+    let year = req.params.year;
+    year = year - 543;
+    try {
+        const enrollCount = await Course.findEnrollCountByCourseIdByYear(courseId,year);
+        res.status(200).json({ enrollCount });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Failed to fetch enrollment count',
+            error: error.message
+        });
+    }
+};
+
 exports.updateSkills = async (req, res) => {
     const courseId = req.params.courseId;
     const skills = req.body.skills;

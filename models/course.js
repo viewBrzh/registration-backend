@@ -110,6 +110,15 @@ module.exports = class Course {
     }
   }
 
+  static async findEnrollCountByCourseIdByYear(courseId, year) {
+    try {
+      const [results, fields] = await db.execute('SELECT COUNT(*) AS enroll_count FROM trn_enroll WHERE train_course_id = ? AND YEAR(enroll_date) =?', [courseId, year]);
+      return results[0].enroll_count;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async updateSkills(courseId, skills) {
     try {
       const [results, fields] = await db.execute('UPDATE trn_course_detail SET skills = ? WHERE train_course_id = ?', [skills, courseId]);

@@ -20,6 +20,8 @@ router.put('/set-publish/:courseId', CourseController.setPublishCourse);
 
 router.get('/:courseId/enrollCount', CourseController.getEnrollCountForCourse);
 
+router.get('/:courseId/enrollCount/:year', CourseController.getEnrollCountForCourseByYear);
+
 router.put('/:courseId/update-skills', CourseController.updateSkills);
 
 router.get('/courseByYear/:year', CourseController.getCourseByYear);
