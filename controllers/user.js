@@ -76,5 +76,14 @@ exports.getUserCount = async (req, res) => {
   }
 };
 
-
-
+exports.getUserStatus = async (req, res) => {
+  const id = req.params.id;
+  let year = req.params.year;
+  year = year - 543;
+  try {
+    const status = await User.getUserStatus(id, year);
+    res.json(status);
+  } catch (error) {
+    throw error;
+  }
+}

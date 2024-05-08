@@ -96,15 +96,38 @@ module.exports = class User {
 
   static async getCount() {
     try {
-        const [results, fields] = await db.execute('SELECT COUNT(*) AS userCount FROM users WHERE role = "teacher" OR role = "executive"');
-        return results[0].userCount;
+      const [results, fields] = await db.execute('SELECT COUNT(*) AS userCount FROM users WHERE role = "teacher" OR role = "executive"');
+      return results[0].userCount;
     } catch (error) {
-        console.error('Error getting user count:', error);
-        throw error;
+      console.error('Error getting user count:', error);
+      throw error;
     }
-};
+  };
 
-  
-  
+  static async getUserStatus(userId, year) {
+    try {
+      const [results, fields] = await db.execute(
+        'SELECT trn_enroll.status FROM users LEFT JOIN trn_enroll ON users.user_id = trn_enroll.user_id WHERE users.user_id = ? AND YEAR(trn_enroll.enroll_date) = ?',
+        [userId, year]
+      );
+
+      if (results.length === 0) {
+        return 'not enroll yet';
+      }
+
+      const statuses = results.map(result => result.status);
+
+      if (statuses.includes(1)) {
+        return 'pass';
+      } else if (statuses.includes(0)) {
+        return 'enrolled';
+      } else {
+        return 'not enroll yet';
+      }
+    } catch (error) {
+      console.error('Error getting user status:', error);
+      throw error;
+    }
+  }
 
 };

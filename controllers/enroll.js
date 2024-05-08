@@ -221,3 +221,15 @@ exports.getNotiByuserId = async (req, res) => {
         throw error;
     }
 }
+
+exports.getCourseTypeByDepartment = async (req, res) => {
+    const department = req.params.department;
+    let year = req.params.year;
+    year = year - 543;
+    try {
+        const result = await Enrollment.getCourseTypeByDepartment(department, year)
+        res.status(200).json(result);
+    } catch (error) {
+        throw error;
+    }
+}

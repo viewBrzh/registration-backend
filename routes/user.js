@@ -19,6 +19,8 @@ router.post('/userCount', userController.getUserCount);
 
 router.get('/getDepartment/:id', userController.getUserDepartment);
 
+router.get('/getStatus/:id/:year' , userController.getUserStatus);
+
 
 
 module.exports = router;

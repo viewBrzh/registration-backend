@@ -135,7 +135,7 @@ module.exports = class Enrollment {
   static async getCountByYear(year) {
     try {
       const query = `
-        SELECT COUNT(*) AS enrollCount FROM trn_enroll WHERE YEAR(enroll_date) = ? AND status = 1`;
+        SELECT COUNT(DISTINCT user_id) AS enrollCount FROM trn_enroll WHERE YEAR(enroll_date) = ? AND status = 1`;
       const [results, fields] = await db.execute(query, [year]);
       return results[0].enrollCount;
     } catch (error) {
@@ -160,7 +160,7 @@ module.exports = class Enrollment {
 
   static async getNotiByUserId(userId) {
     try {
-        const query = `
+      const query = `
             SELECT *
             FROM trn_enroll
             WHERE user_id = ? AND status = 1
@@ -169,12 +169,34 @@ module.exports = class Enrollment {
                 FROM feedback
                 WHERE feedback.enroll_id = trn_enroll.enroll_id
             )`;
-        const [results, fields] = await db.execute(query, [userId]);
-        return results;
+      const [results, fields] = await db.execute(query, [userId]);
+      return results;
     } catch (error) {
-        throw error;
+      throw error;
     }
+  }
+
+  static async getCourseTypeByDepartment(department, year) {
+  try {
+    const query = `
+      SELECT e.*, c.course_id
+      FROM trn_enroll e
+      JOIN users u ON e.user_id = u.user_id
+      JOIN trn_course_detail c ON e.train_course_id = c.train_course_id
+      WHERE u.department = ? AND YEAR(e.enroll_date) = ?`;
+    const [results, fields] = await db.execute(query, [department, year]);
+
+    const resultWithType = results.map(result => {
+      const type = result.course_id === 1 ? 'Basic Counseling' : 'Retreat';
+      return { ...result, type };
+    });
+
+    return resultWithType;
+  } catch (error) {
+    throw error;
+  }
 }
+
 
 
 };
