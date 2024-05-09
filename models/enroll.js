@@ -210,14 +210,13 @@ module.exports = class Enrollment {
         LEFT JOIN trn_enroll e ON u.user_id = e.user_id
         AND YEAR(e.enroll_date) = ?
         LEFT JOIN trn_course_detail c ON e.train_course_id = c.train_course_id AND c.course_id = 1
-        WHERE u.department = ?`;
+        WHERE u.department = ? AND u.role != 'admin'`;
       const [results, fields] = await db.execute(query, [year, department]);
-
+  
       return results;
     } catch (error) {
       throw error;
     }
   }
-
 
 };
