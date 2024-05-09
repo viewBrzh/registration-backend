@@ -177,26 +177,47 @@ module.exports = class Enrollment {
   }
 
   static async getCourseTypeByDepartment(department, year) {
-  try {
-    const query = `
+    try {
+      const query = `
       SELECT e.*, c.course_id
       FROM trn_enroll e
       JOIN users u ON e.user_id = u.user_id
       JOIN trn_course_detail c ON e.train_course_id = c.train_course_id
       WHERE u.department = ? AND YEAR(e.enroll_date) = ?`;
-    const [results, fields] = await db.execute(query, [department, year]);
+      const [results, fields] = await db.execute(query, [department, year]);
 
-    const resultWithType = results.map(result => {
-      const type = result.course_id === 1 ? 'Basic Counseling' : 'Retreat';
-      return { ...result, type };
-    });
+      const resultWithType = results.map(result => {
+        const type = result.course_id === 1 ? 'Basic Counseling' : 'Retreat';
+        return { ...result, type };
+      });
 
-    return resultWithType;
-  } catch (error) {
-    throw error;
+      return resultWithType;
+    } catch (error) {
+      throw error;
+    }
   }
-}
 
+  static async getUserStatusByDepartments(department, year) {
+    try {
+      const query = `
+        SELECT u.*, 
+               CASE 
+                 WHEN e.status = 1 THEN 'Pass'
+                 WHEN e.status = 0 THEN 'Enrolled'
+                 ELSE 'Not Enrolled Yet' 
+               END AS status
+        FROM users u
+        LEFT JOIN trn_enroll e ON u.user_id = e.user_id
+        AND YEAR(e.enroll_date) = ?
+        LEFT JOIN trn_course_detail c ON e.train_course_id = c.train_course_id AND c.course_id = 1
+        WHERE u.department = ?`;
+      const [results, fields] = await db.execute(query, [year, department]);
+
+      return results;
+    } catch (error) {
+      throw error;
+    }
+  }
 
 
 };

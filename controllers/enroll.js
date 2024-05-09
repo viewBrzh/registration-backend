@@ -233,3 +233,15 @@ exports.getCourseTypeByDepartment = async (req, res) => {
         throw error;
     }
 }
+
+exports.getUserStatusByDepartment = async (req, res) => {
+    const department = req.params.department;
+    let year = req.params.year;
+    year = year - 543;
+    try {
+        const result = await Enrollment.getUserStatusByDepartments(department, year)
+        res.status(200).json(result);
+    } catch (error) {
+        throw error;
+    }
+}
