@@ -200,7 +200,7 @@ module.exports = class Enrollment {
   static async getUserStatusByDepartments(department, year) {
     try {
       const query = `
-        SELECT u.*, 
+        SELECT u.user_id, username, email, phone, role, department, 
                CASE 
                  WHEN e.status = 1 THEN 'Pass'
                  WHEN e.status = 0 THEN 'Enrolled'
@@ -217,6 +217,6 @@ module.exports = class Enrollment {
     } catch (error) {
       throw error;
     }
-  }
+  }  
 
 };
