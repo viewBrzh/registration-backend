@@ -135,7 +135,10 @@ module.exports = class Enrollment {
   static async getCountByYear(year) {
     try {
       const query = `
-        SELECT COUNT(DISTINCT user_id) AS enrollCount FROM trn_enroll WHERE YEAR(enroll_date) = ? AND status = 1`;
+        SELECT COUNT(DISTINCT trn_enroll.user_id) AS enrollCount
+        FROM trn_enroll
+        JOIN users ON trn_enroll.user_id = users.user_id
+        WHERE YEAR(trn_enroll.enroll_date) = ? AND trn_enroll.status = 1 AND users.role != 'admin'`;
       const [results, fields] = await db.execute(query, [year]);
       return results[0].enrollCount;
     } catch (error) {
@@ -143,13 +146,17 @@ module.exports = class Enrollment {
     }
   }
 
+
   static async getDepartmentByYear(department, year) {
     try {
       const query = `
             SELECT COUNT(*) AS enrollCount
             FROM trn_enroll
             JOIN users ON trn_enroll.user_id = users.user_id
-            WHERE users.department = ? AND YEAR(enroll_date) = ? AND status = 1`;
+            WHERE users.department = ? 
+              AND YEAR(enroll_date) = ? 
+              AND status = 1 
+              AND users.role != 'admin'`;
       const [results, fields] = await db.execute(query, [department, year]);
       return results[0].enrollCount;
     } catch (error) {
@@ -212,11 +219,11 @@ module.exports = class Enrollment {
         LEFT JOIN trn_course_detail c ON e.train_course_id = c.train_course_id AND c.course_id = 1
         WHERE u.department = ? AND u.role != 'admin'`;
       const [results, fields] = await db.execute(query, [year, department]);
-  
+
       return results;
     } catch (error) {
       throw error;
     }
-  }  
+  }
 
 };
