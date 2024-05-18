@@ -30,9 +30,9 @@ exports.setPublishCourse = (req, res, next) => {
 }
 
 exports.addCourse = (req, res, next) => {
-    const { course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image } = req.body;
+    const { course_detail_name, course_id, train_detail, train_place, start_enroll_date, end_enroll_date, start_date, finish_date, image, limit } = req.body;
     
-    Course.create(course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image)
+    Course.create(course_detail_name, course_id, train_detail, train_place, start_enroll_date, end_enroll_date, start_date, finish_date, image, limit)
     .then((insertId) => {
         res.status(200).json({
             message: "Success",
@@ -62,9 +62,9 @@ exports.getEditCourse = (req, res, next) => {
 exports.editCourse = (req, res, next) => {
     const courseId = req.params.courseId;
     console.log(req.body);
-    const { course_id, course_detail_name, train_detail, train_place, start_date, finish_date, image } = req.body;
+    const { course_id, course_detail_name, train_detail, train_place, start_enroll_date, end_enroll_date, start_date, finish_date, image, limit } = req.body;
     
-    Course.update(courseId, course_id, course_detail_name, train_detail, train_place, start_date, finish_date, image).then(() => {
+    Course.update(courseId, course_id, course_detail_name, train_detail, train_place, start_enroll_date, end_enroll_date, start_date, finish_date, image, limit).then(() => {
         res.status(200).json({
             "message": "success",
             "result": true

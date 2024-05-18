@@ -36,4 +36,6 @@ router.get('/getCouseType/:department/:year', Enrollment.getCourseTypeByDepartme
 
 router.get('/getUser/:department/:year', Enrollment.getUserStatusByDepartment);
 
+router.get('/getEnrollCount/:course_id', Enrollment.getCountByCourse);
+
 module.exports = router;

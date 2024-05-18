@@ -226,4 +226,19 @@ module.exports = class Enrollment {
     }
   }
 
+  static async getCountByCourse(courseId) {
+    try {
+      const query = `
+      SELECT COUNT(*) AS count
+            FROM trn_enroll
+            WHERE train_course_id = ?
+        `;
+      const [results, fields] = await db.execute(query, [courseId]);
+
+      return results;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 };

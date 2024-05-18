@@ -245,3 +245,14 @@ exports.getUserStatusByDepartment = async (req, res) => {
         throw error;
     }
 }
+
+exports.getCountByCourse = async (req, res) => {
+    const courseId = req.params.course_id;
+    
+    try {
+        const result = await Enrollment.getCountByCourse(courseId)
+        res.status(200).json(result[0]);
+    } catch (error) {
+        throw error;
+    }
+}

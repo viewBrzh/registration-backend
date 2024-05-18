@@ -39,20 +39,18 @@ module.exports = class Course {
     return db.execute('SELECT * FROM trn_course_detail WHERE train_course_id = ?', [courseId]);
   }
 
-  static create(course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image) {
+  static create(course_detail_name, course_id, train_detail, train_place, start_enroll_date, end_enroll_date, start_date, finish_date, image, limit) {
     return db.execute(
-      'INSERT INTO trn_course_detail (course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [course_detail_name, course_id, train_detail, train_place, start_date, finish_date, image]
+      'INSERT INTO trn_course_detail (course_detail_name, course_id, train_detail, train_place, start_enroll_date, end_enroll_date, start_date, finish_date, image, `limit`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [course_detail_name, course_id, train_detail, train_place, start_enroll_date, end_enroll_date, start_date, finish_date, image, limit]
     )
   }
 
-
-
-  static update(courseId, course_id, course_detail_name, train_detail, train_place, start_date, finish_date, image) {
+  static update(courseId, course_id, course_detail_name, train_detail, train_place, start_enroll_date, end_enroll_date, start_date, finish_date, image, limit) {
     return new Promise((resolve, reject) => {
       db.query(
-        'UPDATE trn_course_detail SET course_id = ?, course_detail_name = ?, train_detail = ?, train_place = ?, start_date = ?, finish_date = ?, image = ? WHERE train_course_id = ?',
-        [course_id, course_detail_name, train_detail, train_place, start_date, finish_date, image, courseId],
+        'UPDATE trn_course_detail SET course_id = ?, course_detail_name = ?, train_detail = ?, train_place = ?, start_enroll_date = ?, end_enroll_date = ?, start_date = ?, finish_date = ?, image = ?, `limit` = ? WHERE train_course_id = ?',
+        [course_id, course_detail_name, train_detail, train_place, start_enroll_date, end_enroll_date, start_date, finish_date, image, limit, courseId],
         (error, results) => {
           if (error) {
             reject(error);
