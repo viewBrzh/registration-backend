@@ -9,7 +9,27 @@ exports.enrollCourse = async (req, res) => {
         const existingEnrollment = await Enrollment.findByCourseIdAndUserId(courseId, userId);
         if (existingEnrollment) {
             return res.status(400).json({
-                message: 'You already enrolled in the course',
+                message: 'You are already enrolled in the course',
+                result: false
+            });
+        }
+
+        // Get the course limit
+        const courseLimit = await Enrollment.getCourseLimit(courseId);
+        if (courseLimit === null) {
+            return res.status(404).json({
+                message: 'Course not found',
+                result: false
+            });
+        }
+
+        // Count the current enrollments for the course
+        const currentEnrollments = await Enrollment.getCountByCourse(courseId);
+        console.log("course limit: " + courseLimit + ", enroll count :" + currentEnrollments)
+        // Check if the enrollment limit has been reached
+        if (currentEnrollments >= courseLimit) {
+            return res.status(400).json({
+                message: 'Enrollment limit reached for this course',
                 result: false
             });
         }
@@ -29,7 +49,6 @@ exports.enrollCourse = async (req, res) => {
         });
     }
 };
-
 
 exports.getAllEnrollments = async (req, res) => {
     try {
@@ -173,7 +192,7 @@ exports.CountEnroll = async (req, res) => {
         const count = await Enrollment.getCount();
         res.status(200).json(count)
     } catch (error) {
-        res.status(500).json({message: 'Internal server error'})
+        res.status(500).json({ message: 'Internal server error' })
     }
 }
 
@@ -184,7 +203,7 @@ exports.CountEnrollByYear = async (req, res) => {
         const count = await Enrollment.getCountByYear(year);
         res.status(200).json(count)
     } catch (error) {
-        res.status(500).json({message: 'Internal server error'})
+        res.status(500).json({ message: 'Internal server error' })
     }
 }
 
@@ -195,7 +214,7 @@ exports.getEnrollByYear = async (req, res) => {
         const count = await Enrollment.getErollByYear(year);
         res.status(200).json(count);
     } catch (error) {
-        res.status(500).json({message: 'Internal server error'})
+        res.status(500).json({ message: 'Internal server error' })
     }
 }
 
@@ -248,7 +267,7 @@ exports.getUserStatusByDepartment = async (req, res) => {
 
 exports.getCountByCourse = async (req, res) => {
     const courseId = req.params.course_id;
-    
+
     try {
         const result = await Enrollment.getCountByCourse(courseId)
         res.status(200).json(result[0]);

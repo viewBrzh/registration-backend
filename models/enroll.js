@@ -241,4 +241,22 @@ module.exports = class Enrollment {
     }
   }
 
+  static async getCourseLimit(courseId) {
+    try {
+      const query = `
+        SELECT \`limit\`
+        FROM trn_course_detail
+        WHERE train_course_id = ?
+      `;
+      const [results, fields] = await db.execute(query, [courseId]);
+      if (results.length === 0) {
+        return null;
+      }
+      return results;
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+
 };
