@@ -38,4 +38,6 @@ router.get('/getUser/:department/:year', Enrollment.getUserStatusByDepartment);
 
 router.get('/getEnrollCount/:course_id', Enrollment.getCountByCourse);
 
+router.get('/getUserNoti/:user_id', Enrollment.getDateNotiByuserId);
+
 module.exports = router;

@@ -275,3 +275,16 @@ exports.getCountByCourse = async (req, res) => {
         throw error;
     }
 }
+
+exports.getDateNotiByuserId = async (req, res) => {
+    const userId = req.params.user_id;
+    try {
+        const result = await Enrollment.getDateNotiByUserId(userId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Failed to fetch notifications',
+            error: error.message
+        });
+    }
+}

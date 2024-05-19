@@ -168,13 +168,14 @@ module.exports = class Enrollment {
   static async getNotiByUserId(userId) {
     try {
       const query = `
-            SELECT *
-            FROM trn_enroll
+            SELECT e.*, c.course_detail_name, c.finish_date
+            FROM trn_enroll e
+            JOIN trn_course_detail c ON e.train_course_id = c.train_course_id
             WHERE user_id = ? AND status = 1
             AND NOT EXISTS (
                 SELECT 1
                 FROM feedback
-                WHERE feedback.enroll_id = trn_enroll.enroll_id
+                WHERE feedback.enroll_id = e.enroll_id
             )`;
       const [results, fields] = await db.execute(query, [userId]);
       return results;
@@ -257,6 +258,23 @@ module.exports = class Enrollment {
       throw error;
     }
   }
+
+  static async getDateNotiByUserId(userId) {
+    try {
+      const query = `
+        SELECT e.*, c.start_date, c.course_detail_name, c.train_place
+        FROM trn_enroll e
+        JOIN trn_course_detail c ON e.train_course_id = c.train_course_id
+        WHERE e.user_id = ? AND c.start_date > CURDATE() AND c.start_date <= CURDATE() + INTERVAL 7 DAY`;
+      const [results, fields] = await db.execute(query, [userId]);
+      return results;
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+      throw error;
+    }
+  }
   
+  
+
 
 };
