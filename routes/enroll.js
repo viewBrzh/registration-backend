@@ -40,4 +40,6 @@ router.get('/getEnrollCount/:course_id', Enrollment.getCountByCourse);
 
 router.get('/getUserNoti/:user_id', Enrollment.getDateNotiByuserId);
 
+router.get('/getCourseLimit/:course_id', Enrollment.getCourseLimit);
+
 module.exports = router;

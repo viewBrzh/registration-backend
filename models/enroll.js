@@ -253,7 +253,7 @@ module.exports = class Enrollment {
       if (results.length === 0) {
         return null;
       }
-      return results;
+      return results[0].limit;
     } catch (error) {
       throw error;
     }

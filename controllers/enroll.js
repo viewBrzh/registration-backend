@@ -25,9 +25,10 @@ exports.enrollCourse = async (req, res) => {
 
         // Count the current enrollments for the course
         const currentEnrollments = await Enrollment.getCountByCourse(courseId);
-        console.log("course limit: " + courseLimit + ", enroll count :" + currentEnrollments)
+        const creentEnroll = currentEnrollments[0].count;
+        console.log("course limit: " + courseLimit + ", enroll count :" + creentEnroll)
         // Check if the enrollment limit has been reached
-        if (currentEnrollments >= courseLimit) {
+        if (creentEnroll >= courseLimit) {
             return res.status(400).json({
                 message: 'Enrollment limit reached for this course',
                 result: false
@@ -288,3 +289,29 @@ exports.getDateNotiByuserId = async (req, res) => {
         });
     }
 }
+
+exports.getCourseLimit = async (req, res) => {
+    const courseId = req.params.course_id;
+
+    try {
+        // Get the course limit
+        const courseLimit = await Enrollment.getCourseLimit(courseId);
+
+        if (courseLimit === null) {
+            return res.status(404).json({
+                message: 'Course not found',
+                result: false
+            });
+        }
+
+        return res.status(200).json(courseLimit);
+    } catch (error) {
+        console.error('Error fetching course limit:', error);
+        return res.status(500).json({
+            message: 'An error occurred while fetching the course limit',
+            result: false,
+            error: error.message
+        });
+    }
+};
+
