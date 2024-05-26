@@ -19,7 +19,7 @@ module.exports = class User {
   }
 
   static findById(userId) {
-    return db.execute('SELECT user_id, username, email, role, department, phone, image FROM users WHERE user_id = ?', [userId]);
+    return db.execute('SELECT user_id, username, email, role, department, faculty, phone, image FROM users WHERE user_id = ?', [userId]);
   }
 
   static findOne(username) {
@@ -68,7 +68,7 @@ module.exports = class User {
 
   static async login(username, password) {
     try {
-      const [results, fields] = await db.execute('SELECT user_id, username, email, phone, department, role, image FROM users WHERE username = ? AND password = ?', [username, password]);
+      const [results, fields] = await db.execute('SELECT user_id, username, email, phone, department, faculty, role, image FROM users WHERE username = ? AND password = ?', [username, password]);
       if (results.length === 0) {
         throw new Error('Invalid credentials');
       }
@@ -90,8 +90,12 @@ module.exports = class User {
     }
   }
 
-  static async getAllDepartments() {
-    return db.execute('SELECT DISTINCT department FROM users');
+  static async getAllDepartments(faculty) {
+    return db.execute('SELECT DISTINCT department FROM users Where faculty = ?', [faculty]);
+  }
+
+  static async getAllFaculties() {
+    return db.execute('SELECT DISTINCT faculty FROM users');
   }
 
   static async getCount() {

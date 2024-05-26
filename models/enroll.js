@@ -147,23 +147,24 @@ module.exports = class Enrollment {
   }
 
 
-  static async getDepartmentByYear(department, year) {
+  static async getFacultyByYear(faculty, year) {
     try {
       const query = `
-            SELECT COUNT(*) AS enrollCount
-            FROM trn_enroll
-            JOIN users ON trn_enroll.user_id = users.user_id
-            WHERE users.department = ? 
-              AND YEAR(enroll_date) = ? 
-              AND status = 1 
-              AND users.role != 'admin'`;
-      const [results, fields] = await db.execute(query, [department, year]);
+        SELECT COUNT(DISTINCT trn_enroll.user_id) AS enrollCount
+        FROM trn_enroll
+        JOIN users ON trn_enroll.user_id = users.user_id
+        WHERE users.faculty = ? 
+          AND YEAR(enroll_date) = ? 
+          AND status = 1 
+          AND users.role != 'admin'`;
+      const [results, fields] = await db.execute(query, [faculty, year]);
       return results[0].enrollCount;
     } catch (error) {
-      console.error('Error in getDepartmentByYear:', error);
+      console.error('Error in getFacultyByYear:', error);
       throw error;
     }
   }
+
 
   static async getNotiByUserId(userId) {
     try {
@@ -205,10 +206,10 @@ module.exports = class Enrollment {
     }
   }
 
-  static async getUserStatusByDepartments(department, year) {
+  static async getUserStatusByFacultys(faculty, year) {
     try {
       const query = `
-        SELECT u.user_id, username, email, phone, role, department, 
+        SELECT u.user_id, username, email, phone, role, department, faculty,
                CASE 
                  WHEN e.status = 1 THEN 'Pass'
                  WHEN e.status = 0 THEN 'Enrolled'
@@ -218,8 +219,8 @@ module.exports = class Enrollment {
         LEFT JOIN trn_enroll e ON u.user_id = e.user_id
         AND YEAR(e.enroll_date) = ?
         LEFT JOIN trn_course_detail c ON e.train_course_id = c.train_course_id AND c.course_id = 1
-        WHERE u.department = ? AND u.role != 'admin'`;
-      const [results, fields] = await db.execute(query, [year, department]);
+        WHERE u.faculty = ? AND u.role != 'admin'`;
+      const [results, fields] = await db.execute(query, [year, faculty]);
 
       return results;
     } catch (error) {
@@ -273,8 +274,8 @@ module.exports = class Enrollment {
       throw error;
     }
   }
-  
-  
+
+
 
 
 };

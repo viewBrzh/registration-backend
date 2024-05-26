@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/user');
 
-router.get('/departments', userController.getAllDepartments)
+router.get('/departments/:faculty', userController.getAllDepartments);
+
+router.get('/faculties', userController.getAllFaculties);
 
 // Login user
 router.post('/login', userController.loginUser);

@@ -219,12 +219,12 @@ exports.getEnrollByYear = async (req, res) => {
     }
 }
 
-exports.getDepartmentByYear = async (req, res) => {
+exports.getFacultyByYear = async (req, res) => {
     let year = req.params.year;
     year = year - 543;
-    const department = req.params.department;
+    const faculty = req.params.faculty;
     try {
-        const count = await Enrollment.getDepartmentByYear(department, year);
+        const count = await Enrollment.getFacultyByYear(faculty, year);
         res.status(200).json(count);
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' })
@@ -254,12 +254,12 @@ exports.getCourseTypeByDepartment = async (req, res) => {
     }
 }
 
-exports.getUserStatusByDepartment = async (req, res) => {
-    const department = req.params.department;
+exports.getUserStatusByFaculty = async (req, res) => {
+    const faculty = req.params.faculty;
     let year = req.params.year;
     year = year - 543;
     try {
-        const result = await Enrollment.getUserStatusByDepartments(department, year)
+        const result = await Enrollment.getUserStatusByFacultys(faculty, year)
         res.status(200).json(result);
     } catch (error) {
         throw error;
