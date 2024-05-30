@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const multer = require('multer');
-const db = require('./util/database');
 const path = require('path');
 
 const courseRoutes = require('./routes/course');

@@ -28,11 +28,13 @@ router.get('/byYear/:year', Enrollment.getEnrollByYear);
 
 router.get('/countByYear/:year', Enrollment.CountEnrollByYear);
 
+router.get('/countDepartmentByYear/:department/:year', Enrollment.getDepartmentByYear);
+
 router.get('/countFacultyByYear/:faculty/:year', Enrollment.getFacultyByYear);
 
 router.get('/getNoti/:user_id', Enrollment.getNotiByuserId);
 
-router.get('/getCouseType/:department/:year', Enrollment.getCourseTypeByDepartment);
+router.get('/getCourseType/:faculty/:year', Enrollment.getCourseTypeByFaculty);
 
 router.get('/getUser/:faculty/:year', Enrollment.getUserStatusByFaculty);
 

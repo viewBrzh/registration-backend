@@ -147,15 +147,41 @@ module.exports = class Enrollment {
   }
 
 
+  static async getDepartmentByYear(department, year) {
+    try {
+      if (department === undefined || year === undefined) {
+        throw new Error('Department and year must be provided');
+      }
+  
+      const query = `
+        SELECT COUNT(DISTINCT trn_enroll.user_id) AS enrollCount
+        FROM trn_enroll
+        JOIN users ON trn_enroll.user_id = users.user_id
+        WHERE users.department = ? 
+          AND YEAR(enroll_date) = ? 
+          AND trn_enroll.status = 1 
+          AND users.role != 'admin'`;
+      const [results, fields] = await db.execute(query, [department, year]);
+      return results[0].enrollCount;
+    } catch (error) {
+      console.error('Error in getDepartmentByYear:', error);
+      throw error;
+    }
+  }
+
   static async getFacultyByYear(faculty, year) {
     try {
+      if (faculty === undefined || year === undefined) {
+        throw new Error('Department and year must be provided');
+      }
+  
       const query = `
         SELECT COUNT(DISTINCT trn_enroll.user_id) AS enrollCount
         FROM trn_enroll
         JOIN users ON trn_enroll.user_id = users.user_id
         WHERE users.faculty = ? 
           AND YEAR(enroll_date) = ? 
-          AND status = 1 
+          AND trn_enroll.status = 1 
           AND users.role != 'admin'`;
       const [results, fields] = await db.execute(query, [faculty, year]);
       return results[0].enrollCount;
@@ -164,7 +190,6 @@ module.exports = class Enrollment {
       throw error;
     }
   }
-
 
   static async getNotiByUserId(userId) {
     try {
@@ -185,15 +210,15 @@ module.exports = class Enrollment {
     }
   }
 
-  static async getCourseTypeByDepartment(department, year) {
+  static async getCourseTypeByFaculty(faculty, year) {
     try {
       const query = `
       SELECT e.*, c.course_id
       FROM trn_enroll e
       JOIN users u ON e.user_id = u.user_id
       JOIN trn_course_detail c ON e.train_course_id = c.train_course_id
-      WHERE u.department = ? AND YEAR(e.enroll_date) = ?`;
-      const [results, fields] = await db.execute(query, [department, year]);
+      WHERE u.faculty = ? AND YEAR(e.enroll_date) = ?`;
+      const [results, fields] = await db.execute(query, [faculty, year]);
 
       const resultWithType = results.map(result => {
         const type = result.course_id === 1 ? 'Basic Counseling' : 'Retreat';
@@ -211,22 +236,23 @@ module.exports = class Enrollment {
       const query = `
         SELECT u.user_id, username, email, phone, role, department, faculty,
                CASE 
-                 WHEN e.status = 1 THEN 'Pass'
-                 WHEN e.status = 0 THEN 'Enrolled'
+                 WHEN MAX(e.status) = 1 THEN 'Pass'
+                 WHEN MAX(e.status) = 0 THEN 'Enrolled'
                  ELSE 'Not Enrolled Yet' 
                END AS status
         FROM users u
         LEFT JOIN trn_enroll e ON u.user_id = e.user_id
         AND YEAR(e.enroll_date) = ?
         LEFT JOIN trn_course_detail c ON e.train_course_id = c.train_course_id AND c.course_id = 1
-        WHERE u.faculty = ? AND u.role != 'admin'`;
+        WHERE u.faculty = ? AND u.role != 'admin'
+        GROUP BY u.user_id, username, email, phone, role, department, faculty`;
       const [results, fields] = await db.execute(query, [year, faculty]);
-
+  
       return results;
     } catch (error) {
       throw error;
     }
-  }
+  }  
 
   static async getCountByCourse(courseId) {
     try {
