@@ -7,11 +7,11 @@ exports.getByUser = async (req, res) => {
         res.status(200).json(userInterest);
     } catch (error) {
         res.status(500).json({
-            message: 'Failed to fetch userInterest',
+            message: 'Failed to fetch user interest',
             error: error.message
         });
     }
-}
+};
 
 exports.addUserInterest = async (req, res) => {
     const userId = req.params.user_id;
@@ -28,7 +28,7 @@ exports.addUserInterest = async (req, res) => {
             error: error.message
         });
     }
-}
+};
 
 exports.updateUserInterest = async (req, res) => {
     const userId = req.params.user_id;

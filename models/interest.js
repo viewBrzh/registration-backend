@@ -7,10 +7,9 @@ module.exports = class Interest {
         this.skills = skills;
     }
 
-
     static async getByUser(userId) {
         try {
-            const query = 'SELECT * from user_interest WHERE user_id =?';
+            const query = 'SELECT * FROM user_interest WHERE user_id = ?';
             const [results, fields] = await db.execute(query, [userId]);
             return results;
         } catch (error) {
@@ -37,4 +36,5 @@ module.exports = class Interest {
             throw error;
         }
     }
-}
+
+};
