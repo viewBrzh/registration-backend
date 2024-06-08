@@ -28,4 +28,24 @@ module.exports = class Feedback {
         }
     }
 
+    static async getFeedbackByCourse(courseId) {
+        try {
+            const query = `
+                SELECT f.* 
+                FROM feedback f 
+                JOIN trn_enroll e ON e.enroll_id = f.enroll_id 
+                WHERE e.train_course_id = ?
+            `;
+            const [results, fields] = await db.execute(query, [courseId]);
+
+            if (results.length === 0) {
+                return null;
+            }
+
+            return results;
+        } catch (error) {
+            throw error;
+        }
+    }
+
 }

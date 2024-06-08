@@ -27,3 +27,16 @@ exports.addFeedback = async (req, res) => {
         });
     }
 }
+
+exports.getFeedBackByCourse = async (req, res) => {
+    const courseId = req.params.course_id;
+    try {
+        const result = await Feedback.getFeedbackByCourse(courseId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Failed to get feedback',
+            error: error.message
+        });
+    }
+}
