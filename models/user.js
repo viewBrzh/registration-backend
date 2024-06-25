@@ -95,8 +95,10 @@ module.exports = class User {
   }
 
   static async getAllFaculties() {
-    return db.execute('SELECT DISTINCT faculty FROM users');
+    return db.execute('SELECT faculty, COUNT(*) as userCount FROM users WHERE role != "admin" GROUP BY faculty');
   }
+  
+  
 
   static async getCount() {
     try {
