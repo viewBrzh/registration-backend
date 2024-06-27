@@ -154,37 +154,27 @@ module.exports = class Enrollment {
       }
   
       const query = `
-        SELECT 
-          COUNT(DISTINCT trn_enroll.user_id) AS enrollCount,
-          (SELECT COUNT(DISTINCT users.user_id) 
-           FROM users 
-           WHERE users.department = ? 
-             AND users.role != 'admin') AS userCount
-        FROM 
-          trn_enroll
-        JOIN 
-          users ON trn_enroll.user_id = users.user_id
-        WHERE 
-          users.department = ? 
+        SELECT COUNT(DISTINCT trn_enroll.user_id) AS enrollCount
+        FROM trn_enroll
+        JOIN users ON trn_enroll.user_id = users.user_id
+        WHERE users.department = ? 
           AND YEAR(enroll_date) = ? 
           AND trn_enroll.status = 1 
-          AND users.role != 'admin';
-        `;
-      const [results, fields] = await db.execute(query, [department, department, year]);
-      return results[0];
+          AND users.role != 'admin'`;
+      const [results, fields] = await db.execute(query, [department, year]);
+      return results[0].enrollCount;
     } catch (error) {
       console.error('Error in getDepartmentByYear:', error);
       throw error;
     }
   }
-  
 
   static async getFacultyByYear(faculty, year) {
     try {
       if (faculty === undefined || year === undefined) {
         throw new Error('Department and year must be provided');
       }
-
+  
       const query = `
         SELECT COUNT(DISTINCT trn_enroll.user_id) AS enrollCount
         FROM trn_enroll
@@ -257,12 +247,12 @@ module.exports = class Enrollment {
         WHERE u.faculty = ? AND u.role != 'admin'
         GROUP BY u.user_id, username, email, phone, role, department, faculty`;
       const [results, fields] = await db.execute(query, [year, faculty]);
-
+  
       return results;
     } catch (error) {
       throw error;
     }
-  }
+  }  
 
   static async getCountByCourse(courseId) {
     try {

@@ -91,15 +91,32 @@ module.exports = class User {
   }
 
   static async getAllDepartments(faculty) {
-    return db.execute('SELECT DISTINCT department FROM users Where faculty = ?', [faculty]);
-  }
+    try {
+      const query = `
+        SELECT 
+          u.department,
+          COUNT(DISTINCT CASE WHEN u.role != "admin" THEN u.user_id END) AS userCount
+        FROM 
+          users u
+        WHERE 
+          u.faculty = ?
+        GROUP BY 
+          u.department
+        ORDER BY 
+          u.department;
+      `;
+      const [results, fields] = await db.execute(query, [faculty]);
+      return results;
+    } catch (error) {
+      console.error('Error in getAllDepartments:', error);
+      throw error;
+    }
+  }  
 
   static async getAllFaculties() {
     return db.execute('SELECT faculty, COUNT(*) as userCount FROM users WHERE role != "admin" GROUP BY faculty');
   }
   
-  
-
   static async getCount() {
     try {
       const [results, fields] = await db.execute('SELECT COUNT(*) AS userCount FROM users WHERE role = "teacher" OR role = "executive"');

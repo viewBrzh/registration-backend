@@ -61,7 +61,7 @@ exports.getUserDepartment = async (req, res) => {
 exports.getAllDepartments = async (req, res) => {
   const faculty = req.params.faculty;
   const departments = await User.getAllDepartments(faculty);
-  res.status(200).json(departments[0]); // Return the entire departments array
+  res.status(200).json(departments); // Return the entire departments array
  
 };
 
